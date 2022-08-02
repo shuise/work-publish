@@ -1,9 +1,9 @@
 {
-	"id": "A work-pubilsh",
-	"name": "A Work Pubilsh",
+	"id": "work-pubilsh",
+	"name": "Work Pubilsh to FlowUs",
 	"version": "0.0.1",
 	"minAppVersion": "0.12.0",
-	"description": "This is a pubilsh services for Obsidian.",
+	"description": "This is a pubilsh services for Obsidian. It can publish content to flowus.cn",
 	"author": "shuise",
 	"authorUrl": "https://note.bluetech.top",
 	"isDesktopOnly": false

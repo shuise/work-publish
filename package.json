@@ -1,7 +1,7 @@
 {
-	"name": "A-work-pubilsh",
+	"name": "work-pubilsh",
 	"version": "0.0.1",
-	"description": "This is a publish services for Obsidian (https://obsidian.md)",
+	"description": "This is a pubilsh services for Obsidian. It can publish content to flowus.cn",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
