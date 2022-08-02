@@ -1,4 +1,4 @@
-import { Editor, Plugin, Menu, Notice,
+import { Editor, Plugin, Menu, Notice, addIcon,
 	MarkdownView, MarkdownPreviewView
 } from "obsidian";
 
@@ -16,25 +16,25 @@ export default class PublishWorkPlugin extends Plugin {
 	// loadNotes();
 
   	//左侧按钮，获取内容
-    this.addRibbonIcon("dice", "公号", (event) => {
-		const { workspace, vault } = this.app;
-		const activeView = workspace.getActiveViewOfType(MarkdownView);
+    // addIcon("circle", `<circle cx="50" cy="50" r="50" fill="green" />`);
+  //   this.addRibbonIcon("sync", "公众号", (event) => {
+		// const { workspace, vault } = this.app;
+		// const activeView = workspace.getActiveViewOfType(MarkdownView);
 
-		if (!activeView || activeView.currentMode.type != "preview") {
-			new Notice('请使用预览模式发布');
-			return;
-		}
+		// if (!activeView || activeView.currentMode.type != "preview") {
+		// 	new Notice('请使用预览模式发布');
+		// 	return;
+		// }
 
-		//获取 md 源码后转化为 html
-		let content = getContent();
-			content = marked.parse(content);
-		let url = 'https://mp.weixin.qq.com/';
-		publishContent(content, url);
-    });
+		// let content = getContent();
+		// 	content = marked.parse(content);
+		// let url = 'https://mp.weixin.qq.com/';
+		// publishContent(content, url);
+  //   });
 
   	//左侧按钮，获取内容
   	//icons https://luhaifeng666.github.io/obsidian-plugin-docs-zh/zh/guides/icons.html
-    this.addRibbonIcon("dice", "FlowUs", (event) => {
+    this.addRibbonIcon("dice-glyph", "FlowUs", (event) => {
 		const { workspace, vault } = this.app;
 		const activeView = workspace.getActiveViewOfType(MarkdownView);
 
@@ -44,17 +44,31 @@ export default class PublishWorkPlugin extends Plugin {
 		}
 
 		//获取 md 源码
-		let content = getContent();
-		let url = 'https://flowus.cn/deep-reading/4658452f-3934-42b3-a6b5-f6699f4cf43c';
-		publishContent(content, url);
+		let contentHTML = getHTMLs(activeView);
+        let contentMD = html2md(contentHTML);
+		let url = 'https://flowus.cn/';
+		publishContent(contentMD, url);
     });
   }
 }
 
 
+function getHTMLs(activeView){
+    let blocks = activeView.previewMode.renderer.sections;
+    // console.log(activeView, blocks);
+    let html = '';
+    blocks.forEach(function(item, index){
+        // console.log(index, item, item.el.className);
+        if(item.el.className.indexOf('embedded-backlinks') == -1){
+            html += item.el.innerHTML;            
+        }
+    });
+    return html;
+}
+
 function getContent(){
 	var documentClone = document.cloneNode(true);
-	var titles = ['h1','h2','h3','h4','h5','h6'];
+	var titles = ['h1','h2','h3','h4','h5','h6','blockquote'];
 	titles.forEach(function(tagName){
 		let nodeList = documentClone.querySelectorAll(tagName);
 		nodeList.forEach(function(node){
@@ -70,7 +84,7 @@ function getContent(){
 
 function publishContent(content, url){
   	copy(content).then(()=>{
-  		console.log(content, url);
+  		// console.log(content, url);
     	location.href = url;	  		
   	});
 }
