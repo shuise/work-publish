@@ -45,6 +45,7 @@ export default class PublishWorkPlugin extends Plugin {
 
 		//获取 md 源码
 		let contentHTML = getHTMLs(activeView);
+            contentHTML = getPureContent(contentHTML);
         let contentMD = html2md(contentHTML);
 		let url = 'https://flowus.cn/';
 		publishContent(contentMD, url);
@@ -58,7 +59,7 @@ function getHTMLs(activeView){
     // console.log(activeView, blocks);
     let html = '';
     blocks.forEach(function(item, index){
-        // console.log(index, item, item.el.className);
+        console.log(index, item, item.el.className, item.el.innerHTML);
         if(item.el.className.indexOf('embedded-backlinks') == -1){
             html += item.el.innerHTML;            
         }
@@ -66,19 +67,19 @@ function getHTMLs(activeView){
     return html;
 }
 
-function getContent(){
-	var documentClone = document.cloneNode(true);
+function getPureContent(contentHTML){
+    let renderNode = document.createElement('div');
+        renderNode.innerHTML = contentHTML;
 	var titles = ['h1','h2','h3','h4','h5','h6','blockquote'];
 	titles.forEach(function(tagName){
-		let nodeList = documentClone.querySelectorAll(tagName);
+		let nodeList = renderNode.querySelectorAll(tagName);
 		nodeList.forEach(function(node){
 			node.innerText = node.innerText;
 		});
 	});
 
-	let content = documentClone.querySelector('.markdown-reading-view').innerHTML;
+	let content = renderNode.innerHTML;
 		content = content.split('> ^').join('');
-		content = content.split('<div class="embedded-backlinks">')[0];
 	return html2md(content);
 }
 
