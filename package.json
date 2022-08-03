@@ -1,6 +1,6 @@
 {
 	"name": "work-pubilsh",
-	"version": "0.0.1",
+	"version": "1.0.1",
 	"description": "This is a pubilsh services for Obsidian. It can publish content to flowus.cn",
 	"main": "main.js",
 	"scripts": {
